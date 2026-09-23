@@ -4,13 +4,318 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>慈湖排班助手</title>
 <style>
-:root{font-family:system-ui,-apple-system,'Noto Sans TC',sans-serif;color:#24313d;background:#f3f6f7;--ink:#24313d;--teal:#0c7776;--line:#dce5e7;--warn:#ad581b;--bad:#aa3543}
-*{box-sizing:border-box}body{margin:0}header{background:#123e49;color:white;padding:22px max(18px,calc((100vw - 1320px)/2));display:flex;justify-content:space-between;gap:16px;align-items:center}h1{font-size:1.4rem;margin:0}header p{margin:5px 0 0;color:#c8e0e3;font-size:.87rem}main{max-width:1360px;margin:auto;padding:20px}button,input,select{font:inherit}button{border:1px solid var(--line);background:white;color:var(--ink);border-radius:9px;padding:8px 12px;cursor:pointer}button:hover{border-color:var(--teal)}button.primary{background:var(--teal);color:white;border-color:var(--teal)}button.danger{color:var(--bad)}input[type=month],input[type=text],input[type=number],input[type=date]{padding:7px;border:1px solid var(--line);border-radius:8px;max-width:100%}input[type=number]{width:75px}.toolbar,.panel,.notice{background:white;border:1px solid var(--line);border-radius:13px;padding:16px;margin-bottom:14px}.toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.toolbar .spacer{flex:1}.tabs{display:flex;gap:7px;margin:16px 0}.tabs button.active{background:#d6eeec;color:#075d5b;border-color:#a1d1ce;font-weight:700}.panel h2{font-size:1.1rem;margin:0 0 12px}.sub{color:#60717c;font-size:.87rem}.notice{background:#e8f4f3;color:#285a5d}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}.card{border:1px solid var(--line);border-radius:10px;padding:12px}.card h3{margin:0 0 9px;font-size:1rem}.row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:7px 0}.row label{display:inline-flex;align-items:center;gap:5px}.scroll{overflow:auto;max-height:73vh}table{border-collapse:separate;border-spacing:0;width:100%;min-width:860px;font-size:.9rem}th,td{border-bottom:1px solid var(--line);padding:8px;text-align:left;vertical-align:middle}th{position:sticky;top:0;background:#f4f8f8;z-index:2;white-space:nowrap}td:first-child,th:first-child{position:sticky;left:0;background:#fff;z-index:1;min-width:106px}th:first-child{z-index:3;background:#f4f8f8}tr.weekend td:first-child{background:#fff2ec;color:#a45029}tr.tuesday td:first-child{background:#eaf2fd}.redday td:first-child{background:#fff0f0!important;color:#c62828!important;font-weight:700}.holiday-name{display:block;font-size:.72rem;line-height:1.25;margin-top:2px;color:#c62828;font-weight:600}.auto-holiday-info{font-size:.82rem;color:#60717c}.cell{display:flex;align-items:center;gap:4px;min-width:108px}.cell select{width:82px;min-width:0;padding:6px;border:1px solid var(--line);border-radius:7px;background:white}.cell input{margin:0}.cell label{font-size:.72rem;white-space:nowrap;color:#596d76}.cell.problem select{border-color:var(--bad);background:#fff1f2}.cell.empty select{border-color:#c68433;background:#fff7e9}.muted{color:#9ca9ac}.pill{display:inline-block;border-radius:30px;background:#e8f1f2;padding:4px 9px;margin:3px;font-size:.83rem}.pill.bad{background:#fce9eb;color:var(--bad)}.pill.warn{background:#fff1df;color:var(--warn)}.issue{border-left:4px solid var(--bad);background:#fff5f5;padding:9px 12px;margin:7px 0;border-radius:5px}.issue.warn{border-color:#d88b3e;background:#fff9ef}.settings-table{min-width:660px;max-width:900px}.settings-table td,.settings-table th{position:static!important}.settings-table input[type=text]{width:95px}.settings-table input[type=number]{width:65px}.danger-text{color:var(--bad)}.summary{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}.summary strong{font-size:1.2rem}.hidden{display:none!important}textarea{width:100%;min-height:70px;border:1px solid var(--line);border-radius:8px;padding:8px}@media print{header,.toolbar,.tabs,.no-print,.notice{display:none!important}main{padding:0}.panel{border:none;padding:0}.scroll{max-height:none;overflow:visible}table{font-size:10px;min-width:0}th,td{padding:3px}.cell select{border:0;appearance:none;width:54px;padding:0}.cell label{display:none}.cell input{display:none}body{background:white}}
+:root{
+  font-family:"Microsoft JhengHei","Noto Sans TC",Arial,sans-serif;
+  color:#333;
+  background:#fff;
+  --orange:#ee7b18;
+  --orange-dark:#d8660b;
+  --orange-soft:#fff1e4;
+  --blue:#edf5ff;
+  --blue2:#e3effc;
+  --line:#c9d2dc;
+  --line-dark:#aeb8c2;
+  --head:#f0f0f0;
+  --ink:#333;
+  --warn:#b25a00;
+  --bad:#b5202e;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:#fff;
+  color:var(--ink);
+  font-size:14px;
+}
+header{
+  max-width:980px;
+  margin:0 auto;
+  padding:18px 14px 10px;
+  background:#fff;
+  color:#202020;
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:16px;
+  border-bottom:4px solid var(--orange);
+}
+header h1{
+  margin:0;
+  font-size:24px;
+  font-weight:700;
+  letter-spacing:.02em;
+}
+header p{
+  margin:5px 0 0;
+  color:#666;
+  font-size:12px;
+}
+header>span{
+  color:#777;
+  font-size:12px;
+  white-space:nowrap;
+}
+main{
+  max-width:980px;
+  margin:0 auto;
+  padding:0 14px 36px;
+}
+button,input,select,textarea{font:inherit}
+button{
+  border:1px solid #aeb8c2;
+  background:linear-gradient(#fff,#ececec);
+  color:#333;
+  border-radius:2px;
+  padding:5px 10px;
+  cursor:pointer;
+  min-height:29px;
+}
+button:hover{border-color:#7e8c99;background:#f7f7f7}
+button.primary{
+  color:#fff;
+  border-color:#1687bf;
+  background:linear-gradient(#2fa6de,#1782b8);
+  font-weight:700;
+}
+button.danger{color:var(--bad)}
+input[type=month],input[type=text],input[type=number],input[type=date],select{
+  padding:4px 6px;
+  border:1px solid #b9c1c9;
+  border-radius:2px;
+  background:#fff;
+}
+input[type=number]{width:70px}
+.notice{
+  margin:10px 0;
+  padding:8px 10px;
+  border:1px solid #d7c9b9;
+  border-left:4px solid var(--orange);
+  background:#fffaf4;
+  color:#5b5146;
+  line-height:1.55;
+}
+.toolbar{
+  display:flex;
+  gap:7px;
+  align-items:center;
+  flex-wrap:wrap;
+  padding:8px 10px;
+  margin:8px 0 0;
+  border:1px solid #c4c4c4;
+  background:linear-gradient(#fbfbfb,#eeeeee);
+}
+.toolbar .spacer{flex:1}
+.tabs{
+  display:flex;
+  gap:0;
+  margin:0 0 12px;
+  background:linear-gradient(#f7902f,#ea7611);
+  border-left:1px solid #d96b0d;
+  border-right:1px solid #d96b0d;
+  border-bottom:1px solid #ce6208;
+}
+.tabs button{
+  border:0;
+  border-right:1px solid rgba(255,255,255,.35);
+  border-radius:0;
+  background:transparent;
+  color:#fff;
+  font-weight:700;
+  padding:8px 20px;
+  min-height:34px;
+}
+.tabs button:hover{background:rgba(255,255,255,.12)}
+.tabs button.active{
+  background:#c95e08;
+  color:#fff;
+}
+.panel{
+  margin-bottom:14px;
+  padding:8px;
+  border:1px solid #bfc6cc;
+  border-radius:2px;
+  background:#f8f8f8;
+  box-shadow:0 0 0 3px #eee;
+}
+.panel h2{
+  font-size:15px;
+  margin:0 0 8px;
+  padding:7px 9px;
+  border:1px solid #c5c5c5;
+  background:linear-gradient(#f8f8f8,#e3e3e3);
+  color:#333;
+}
+.sub{
+  margin:7px 4px 10px;
+  color:#66727c;
+  font-size:12px;
+  line-height:1.6;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:10px;
+}
+.card{
+  border:1px solid var(--line);
+  border-radius:2px;
+  background:#fff;
+  padding:10px;
+}
+.card h3{margin:0 0 8px;font-size:14px}
+.row{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  flex-wrap:wrap;
+  margin:7px 0;
+}
+.row label{display:inline-flex;align-items:center;gap:5px}
+.scroll{
+  overflow:auto;
+  max-height:74vh;
+  border:1px solid #c4cbd2;
+  background:#fff;
+}
+table{
+  border-collapse:collapse;
+  width:100%;
+  min-width:860px;
+  font-size:12px;
+  background:#fff;
+}
+th,td{
+  border:1px solid #cbd3dc;
+  padding:5px 6px;
+  text-align:left;
+  vertical-align:middle;
+}
+th{
+  position:sticky;
+  top:0;
+  z-index:2;
+  background:linear-gradient(#f6f6f6,#dcdcdc);
+  color:#222;
+  font-weight:700;
+  white-space:nowrap;
+}
+tbody tr:nth-child(even) td{background:var(--blue)}
+tbody tr:nth-child(odd) td{background:#fff}
+td:first-child,th:first-child{
+  position:sticky;
+  left:0;
+  z-index:1;
+  min-width:112px;
+}
+tbody tr:nth-child(even) td:first-child{background:var(--blue)}
+tbody tr:nth-child(odd) td:first-child{background:#fff}
+th:first-child{z-index:3;background:linear-gradient(#f6f6f6,#dcdcdc)}
+tr.tuesday td:first-child{background:#e8eef4!important}
+tr.weekend td:first-child,
+tr.redday td:first-child{
+  color:#c51924!important;
+  font-weight:700;
+}
+tr.redday td:first-child{background:#fff0f0!important}
+.holiday-name{
+  display:block;
+  margin-top:2px;
+  font-size:11px;
+  line-height:1.25;
+  color:#c51924;
+  font-weight:700;
+}
+.auto-holiday-info{font-size:12px;color:#66727c}
+.cell{
+  display:flex;
+  align-items:center;
+  gap:4px;
+  min-width:108px;
+}
+.cell select{
+  width:78px;
+  min-width:0;
+  padding:3px 4px;
+  border:1px solid #aeb8c2;
+  border-radius:1px;
+  background:#fff;
+}
+.cell label{
+  font-size:11px;
+  white-space:nowrap;
+  color:#59636d;
+}
+.cell.problem select{border:2px solid var(--bad);background:#fff3f4}
+.cell.empty select{border-color:#d28a37;background:#fff8e9}
+.muted{color:#9aa2aa;text-align:center}
+.pill{
+  display:inline-block;
+  border:1px solid #c8d0d8;
+  border-radius:2px;
+  background:#f1f4f6;
+  padding:3px 7px;
+  margin:2px;
+  font-size:12px;
+}
+.pill.bad{background:#fcebed;color:var(--bad);border-color:#e7b8be}
+.pill.warn{background:#fff2dd;color:var(--warn);border-color:#ebcd9e}
+.issue{
+  border:1px solid #e2b9bd;
+  border-left:4px solid var(--bad);
+  background:#fff4f5;
+  padding:7px 9px;
+  margin:6px 0;
+}
+.issue.warn{border-left-color:#d4872e;background:#fff9ee;border-color:#ead2b4}
+.settings-table{min-width:660px;max-width:900px}
+.settings-table td,.settings-table th{position:static!important}
+.settings-table input[type=text]{width:95px}
+.settings-table input[type=number]{width:65px}
+.danger-text{color:var(--bad)}
+.summary{
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+  margin:10px 0;
+}
+.summary strong{font-size:16px}
+.hidden{display:none!important}
+textarea{
+  width:100%;
+  min-height:70px;
+  border:1px solid var(--line);
+  border-radius:2px;
+  padding:6px;
+}
+@media(max-width:700px){
+  body{font-size:13px}
+  header{align-items:flex-start;flex-direction:column;padding:14px 10px 8px}
+  header h1{font-size:19px}
+  header>span{white-space:normal}
+  main{padding:0 8px 24px}
+  .tabs{overflow-x:auto}
+  .tabs button{padding:8px 13px;white-space:nowrap}
+  .toolbar{align-items:flex-start}
+  .toolbar .spacer{display:none}
+  .panel{padding:5px;box-shadow:none}
+  .scroll{max-height:70vh}
+}
+@media print{
+  header,.toolbar,.tabs,.no-print,.notice{display:none!important}
+  main{max-width:none;padding:0}
+  .panel{border:none;box-shadow:none;padding:0}
+  .scroll{max-height:none;overflow:visible;border:none}
+  table{font-size:10px;min-width:0}
+  th,td{padding:3px}
+  .cell select{border:0;appearance:none;width:54px;padding:0}
+  .cell label,.cell input{display:none}
+  body{background:#fff}
+}
 </style></head>
-<body><header><div><h1>慈湖排班助手</h1><p>自動補班、人工鎖定、缺額與連勤檢查</p></div><span>資料只存在這台裝置的瀏覽器</span></header>
+<body><header><div><h1>桃園市政府風景區管理處｜慈湖排班管理平台</h1><p>班表編排、休假登錄、缺額檢查與人力統計</p></div><span>資料儲存在此裝置瀏覽器</span></header>
 <main><div class="notice">先在「人員與規則」確認可排站點，再輸入休假與人工指定班。自動排班只填空格；排完請檢查警示並由承辦及主管確認。</div>
 <div class="toolbar"><label>月份 <input id="month" type="month"></label><button id="generate" class="primary">自動補齊空班</button><button id="check">重新健檢</button><span class="spacer"></span><button id="csv">匯出 CSV</button><button id="backup">備份 JSON</button><button id="restore">匯入 JSON</button><input type="file" accept=".json,application/json" id="file" class="hidden"><button onclick="window.print()">列印</button></div>
-<nav class="tabs"><button data-tab="schedule" class="active">班表</button><button data-tab="timeoff">休假與指定休</button><button data-tab="settings">人員與規則</button><button data-tab="review">健檢與統計</button></nav>
+<nav class="tabs"><button data-tab="schedule" class="active">班表管理</button><button data-tab="timeoff">休假管理</button><button data-tab="settings">人員與規則</button><button data-tab="review">健檢統計</button></nav>
 <section id="schedule" class="panel"><h2 id="scheduleTitle">班表</h2><p class="sub">格內選人員；勾「鎖」表示保留這格，未勾的人工指定班也不會被自動補班覆蓋。灰色「—」代表當天不開此站點。</p><div class="scroll"><table id="scheduleTable"></table></div></section>
 <section id="timeoff" class="panel hidden"><h2>休假與指定休</h2><p class="sub">選擇人員與日期，新增後會阻止自動安排。若該日已有班，健檢會提醒你處理。</p><div class="row"><select id="offStaff"></select><input type="date" id="offDate"><select id="offKind"><option>特休</option><option>補休</option><option>指定休</option><option>公假</option><option>生理假</option><option>其他</option></select><button id="addOff">新增休假</button></div><div id="offList"></div></section>
 <section id="settings" class="panel hidden"><h2>人員與規則</h2><p class="sub">預設代碼取自你的班表。只有勾選的站點會安排該人；例如驗證可先確認是否只限 1、2、4。</p><div class="scroll"><table class="settings-table" id="staffTable"></table></div><div class="row"><input type="text" id="newStaff" placeholder="新代碼或姓名"><button id="addStaff">新增人員</button></div><hr><h2>每日開站</h2><p class="sub">一般日與週二預設可修改；班表裡每一天也能個別勾選站點。2026、2027 政府辦公日曆的放假日會自動標紅並統計，週二休園規則不受影響。</p><div class="grid"><div class="card"><h3>一般日</h3><div id="normalSlots"></div></div><div class="card"><h3>週二休園</h3><div id="tuesdaySlots"></div></div></div><div class="row"><label>最多連上天數 <input id="maxStreak" type="number" min="1" max="20"></label></div><div class="row"><label>手動加紅字（本月日期，以逗號分隔）<input id="holidays" type="text" placeholder="例如 10/10, 10/25" style="min-width:230px"></label></div><div class="row"><label>取消自動紅字（本月日期）<input id="holidayExclusions" type="text" placeholder="例如 10/9" style="min-width:230px"></label></div><div id="autoHolidayInfo" class="auto-holiday-info"></div><h3>逐日站點開關</h3><div class="scroll"><table class="settings-table" id="demandTable"></table></div></section>
